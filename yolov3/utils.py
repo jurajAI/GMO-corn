@@ -151,7 +151,7 @@ def draw_bbox(image, bboxes, CLASSES=YOLO_COCO_CLASSES, show_label=True, show_co
         (x1, y1), (x2, y2) = (coor[0], coor[1]), (coor[2], coor[3])
 
         # put object rectangle
-        cv2.rectangle(image, (x1, y1), (x2, y2), bbox_color, bbox_thick*2)
+        cv2.rectangle(image, (x1, y1), (x2, y2), bbox_color, bbox_thick)
 
         if show_label:
             # get text label
@@ -278,9 +278,8 @@ def postprocess_boxes(pred_bbox, original_image, input_size, score_threshold):
     return np.concatenate([coors, scores[:, np.newaxis], classes[:, np.newaxis]], axis=-1)
 
 
-def detect_image(Yolo, image_path, output_path, input_size=416, show=False, CLASSES=YOLO_COCO_CLASSES, score_threshold=0.3, iou_threshold=0.45, rectangle_colors=''):
+def detect_image(Yolo, image_path, input_size=416, CLASSES=YOLO_COCO_CLASSES, score_threshold=0.3, iou_threshold=0.45, rectangle_colors=''):
     original_image      = cv2.imread(image_path)
-    original_image      = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
     original_image      = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
 
     image_data = image_preprocess(np.copy(original_image), [input_size, input_size])
@@ -304,15 +303,6 @@ def detect_image(Yolo, image_path, output_path, input_size=416, show=False, CLAS
 
     image = draw_bbox(original_image, bboxes, CLASSES=CLASSES, rectangle_colors=rectangle_colors)
     # CreateXMLfile("XML_Detections", str(int(time.time())), original_image, bboxes, read_class_names(CLASSES))
-
-    if output_path != '': cv2.imwrite(output_path, image)
-    if show:
-        # Show the image
-        cv2.imshow("predicted image", image)
-        # Load and hold the image
-        cv2.waitKey(0)
-        # To close the window after the required kill value was provided
-        cv2.destroyAllWindows()
         
     return image
 
