@@ -134,7 +134,7 @@ def main():
 
     mAP_model = Create_Yolo(input_size=YOLO_INPUT_SIZE, CLASSES=TRAIN_CLASSES) # create second model to measure mAP
 
-    best_val_loss = 1000 # should be large at start
+    best_val_loss = 1500 # should be large at start
     for epoch in range(TRAIN_EPOCHS):
         for image_data, target in trainset:
             results = train_step(image_data, target)
