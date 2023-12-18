@@ -45,7 +45,6 @@ def main():
     testset = Dataset('test')
 
     steps_per_epoch = len(trainset)
-    print(steps_per_epoch, len(testset)) ###
     global_steps = tf.Variable(1, trainable=False, dtype=tf.int64)
     warmup_steps = TRAIN_WARMUP_EPOCHS * steps_per_epoch
     total_steps = TRAIN_EPOCHS * steps_per_epoch
@@ -140,7 +139,6 @@ def main():
         for image_data, target in trainset:
             results = train_step(image_data, target)
             cur_step = results[0]%steps_per_epoch
-            print(results[0], cur_step) ###
             print("epoch:{:2.0f} step:{:5.0f}/{}, lr:{:.6f}, giou_loss:{:7.2f}, conf_loss:{:7.2f}, prob_loss:{:7.2f}, total_loss:{:7.2f}"
                   .format(epoch, cur_step, steps_per_epoch, results[1], results[2], results[3], results[4], results[5]))
 
