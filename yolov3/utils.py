@@ -278,7 +278,7 @@ def postprocess_boxes(pred_bbox, original_image, input_size, score_threshold):
     return np.concatenate([coors, scores[:, np.newaxis], classes[:, np.newaxis]], axis=-1)
 
 
-def detect_image(Yolo, image_path, input_size=416, CLASSES=YOLO_COCO_CLASSES, score_threshold=0.3, iou_threshold=0.45, rectangle_colors=''):
+def detect_image(Yolo, image_path, input_size=416, CLASSES=YOLO_COCO_CLASSES, show_label=True, show_confidence = True, tracking=False, score_threshold=0.3, iou_threshold=0.45, rectangle_colors=''):
     original_image      = cv2.imread(image_path)
     original_image      = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
 
@@ -301,7 +301,7 @@ def detect_image(Yolo, image_path, input_size=416, CLASSES=YOLO_COCO_CLASSES, sc
     bboxes = postprocess_boxes(pred_bbox, original_image, input_size, score_threshold)
     bboxes = nms(bboxes, iou_threshold, method='nms')
 
-    image = draw_bbox(original_image, bboxes, CLASSES=CLASSES, rectangle_colors=rectangle_colors)
+    image = draw_bbox(original_image, bboxes, CLASSES=CLASSES, show_label = show_label, show_confidence = show_confidence, rectangle_colors = rectangle_colors, tracking=tracking)
     # CreateXMLfile("XML_Detections", str(int(time.time())), original_image, bboxes, read_class_names(CLASSES))
         
     return image
